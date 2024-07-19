@@ -3,13 +3,18 @@ import ColdWaterAreaMeter from '/ColdWaterAreaMeter.svg';
 import HotWaterAreaMeter from '/HotWaterAreaMeter.svg';
 import RemoveButton from '/remove-button.svg';
 import { useStore } from '../models/RootStore';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
 
 const MetersTable = observer(() => {
   const meters = useStore().meters;
 
-  useEffect(() => {}, [meters]);
+  useEffect(() => {}, []);
+
+  const handleRemoveButtonHover = (id: string) => {
+    const button = document.querySelector(`.remove-button[data-id="${id}"]`);
+    button?.classList.toggle('visible');
+  };
 
   return (
     <table className="meters-table">
@@ -25,7 +30,12 @@ const MetersTable = observer(() => {
         <th></th>
       </thead>
       {meters.map((meter, index) => (
-        <tr key={meter.id} className="meters-table__row">
+        <tr
+          key={meter.id}
+          className="meters-table__row"
+          onMouseEnter={() => handleRemoveButtonHover(meter.id)}
+          onMouseLeave={() => handleRemoveButtonHover(meter.id)}
+        >
           <td className="text-light">{index + 1}</td>
           {meter._type![0] == 'ColdWaterAreaMeter' ? (
             <td className="row-type">
