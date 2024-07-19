@@ -44,15 +44,15 @@
   z-index: 10;
 }
 
-.meters-table__header > th {
+.meters-table__header th {
   padding: 0.5rem 0.75rem;
 }
 
-.meters-table__header > th:first-child {
+.meters-table__header th:first-child {
   border-top-left-radius: 0.75rem;
 }
 
-.meters-table__header > th:last-child {
+.meters-table__header th:last-child {
   border-top-right-radius: 0.75rem;
 }
 
