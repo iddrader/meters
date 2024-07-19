@@ -3,18 +3,32 @@ import ColdWaterAreaMeter from '/ColdWaterAreaMeter.svg';
 import HotWaterAreaMeter from '/HotWaterAreaMeter.svg';
 import RemoveButton from '/remove-button.svg';
 import { useStore } from '../models/RootStore';
-import { useEffect } from 'react';
 import { observer } from 'mobx-react';
+import { MeterModelType } from '../models/MeterModel';
 
 const MetersTable = observer(() => {
-  const meters = useStore().meters;
-  const page = useStore().page;
-
-  useEffect(() => {}, []);
+  const rootStore = useStore();
 
   const handleRemoveButtonHover = (id: string) => {
     const button = document.querySelector(`.remove-button[data-id="${id}"]`);
     button?.classList.toggle('visible');
+  };
+
+  const handleRemoveMeter = async (meter: MeterModelType) => {
+    try {
+      rootStore.setIsLoading(true);
+      await fetch(`http://showroom.eis24.me/api/v4/test/meters/${meter.id}/`, {
+        method: 'DELETE',
+      }).then(() => rootStore.removeMeter(meter));
+      await fetch(
+        `http://showroom.eis24.me/api/v4/test/meters/?limit=1&offset=${rootStore.page.currentPage * 20}`
+      )
+        .then((response) => response.json())
+        .then((data) => rootStore.addMeter(data.results[0]))
+        .then(() => rootStore.setIsLoading(false));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -30,7 +44,7 @@ const MetersTable = observer(() => {
           <th>Примечания</th>
           <th></th> {/* remove metric button */}
         </thead>
-        {meters.map((meter, index) => (
+        {rootStore.meters.map((meter, index) => (
           <tr
             key={meter.id}
             className="meters-table__row"
@@ -38,7 +52,7 @@ const MetersTable = observer(() => {
             onMouseLeave={() => handleRemoveButtonHover(meter.id)}
           >
             <td className="text-light">
-              {(page.currentPage - 1) * 20 + index + 1}
+              {(rootStore.page.currentPage - 1) * 20 + index + 1}
             </td>
             {meter._type![0] == 'ColdWaterAreaMeter' ? (
               <td className="row-type">
@@ -57,7 +71,10 @@ const MetersTable = observer(() => {
             <td>{meter.area?.id}</td>
             <td>{meter.description}</td>
             <td className="remove-button" data-id={meter.id}>
-              <img src={RemoveButton} />
+              <img
+                src={RemoveButton}
+                onClick={() => handleRemoveMeter(meter)}
+              />
             </td>
           </tr>
         ))}

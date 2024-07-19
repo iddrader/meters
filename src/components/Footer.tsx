@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import '../assets/styles/Footer.css';
 import { useStore } from '../models/RootStore';
 import { observer } from 'mobx-react';
+
 type FooterProps = {
   metersCount: number;
 };
@@ -41,7 +42,11 @@ const Footer = observer(({ metersCount }: FooterProps) => {
     }
     return paginationElements;
   };
-  return <div className="footer">{getPagination().map((el) => el)}</div>;
+  return (
+    <>
+      <div className="footer">{getPagination().map((el) => el)}</div>
+    </>
+  );
 });
 
 export default Footer;
