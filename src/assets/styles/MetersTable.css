@@ -1,10 +1,21 @@
+.table-container {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.table-container::-webkit-scrollbar {
+  display: none;
+}
+
 .meters-table {
   position: relative;
-  margin: 1rem;
+  margin: 0 1rem;
   width: calc(100vw - 2rem);
   max-width: calc(100% - 2rem);
   font-size: 0.8125rem;
+  overflow: scroll;
 }
+
 .meters-table tr {
   border: 1px solid #e0e5eb;
   border-top: none;
@@ -30,6 +41,7 @@
   font-weight: 500;
   position: sticky;
   top: 0;
+  z-index: 10;
 }
 
 .meters-table__header > th {
@@ -56,11 +68,11 @@ td.text-light {
 
 .remove-button {
   position: relative;
-  display: none;
+  visibility: hidden;
 }
 
 .remove-button.visible {
-  display: block;
+  visibility: visible;
 }
 
 .remove-button > img {

@@ -5,7 +5,7 @@ export const MeterModel = t.model('MeterModel', {
   id: t.string,
   _type: t.maybeNull(t.array(t.string)),
   area: t.maybeNull(AreaModel),
-  is_automatic: t.maybeNull(t.string),
+  is_automatic: t.maybeNull(t.boolean),
   communication: t.maybeNull(t.string),
   description: t.maybeNull(t.string),
   serial_number: t.maybeNull(t.string),
