@@ -24,8 +24,18 @@ const MetersTable = observer(() => {
         `http://showroom.eis24.me/api/v4/test/meters/?limit=1&offset=${rootStore.page.currentPage * 20}`
       )
         .then((response) => response.json())
-        .then((data) => rootStore.addMeter(data.results[0]))
-        .then(() => rootStore.setIsLoading(false));
+        .then((data) => {
+          rootStore.addMeter(data.results[0]);
+          fetch(
+            `http://showroom.eis24.me/api/v4/test/areas/?id__in=${data.results[0].area!.id}`
+          )
+            .then((response) => response.json())
+            .then((area) => {
+              rootStore.addArea(area.results[0]);
+              rootStore.setArea(area.results[0], data.results[0].id);
+            })
+            .then(() => rootStore.setIsLoading(false));
+        });
     } catch (error) {
       console.log(error);
     }
