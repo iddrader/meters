@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ReactElement } from 'react';
 import '../assets/styles/Footer.css';
 import { useStore } from '../models/RootStore';
